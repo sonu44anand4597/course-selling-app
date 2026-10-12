@@ -1,47 +1,22 @@
 
+        require('dotenv').config()
 
-const express = require ('express')
+        const express = require("express");
 
-const app = express();
+        const {userRouter} = require('./riutes/user');
+        const {courseRouter} = require("./routes/course")
+        const {adminRouter} = require("./routes/admin");
+        const { default: mongoose } = require('mongoose');
 
+        const app = express();
 
-app.post('/user/signup', function(req, res) {
-    res.json({
-        message: 'signup successful'
-    })
+        app.use("/api/v1/user", userRouter);
+        app.use("/api/v1/course", courseRouter);
+        app.use("/api/v1/admin", adminRouter);
 
-})
+        async function main () {
+            await mongoose.connect(process.env.MONGO_URL)
+            app.listen(3000);
+        }
 
-app.post('/user/signin', function(res, res) {
-
-    res.json ({
-        message: 'signin endpoints'
-    })
-})
-
-app.post('/course/purchase', function(req,res) {
-
-    // you would expect the user to pay in the future
-
-    res.json({
-        message: ""
-    })
-})
-
-app.get('/user/purchases' , function(req,res) {
-
-
-    res.json ({
-
-        message: ""
-    })
-})
-
-
-app.get("/courses", function(req,res) {
-    res.json({
-        message: ""
-    })
-})
-
-app.listen(3000);
+     main()
